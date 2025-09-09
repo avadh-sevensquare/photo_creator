@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '../photos/photo_selection_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -59,7 +60,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         colors: const [Color(0xFF3FE0C5), Color(0xFF6BF3C9)],
                         icon: Icons.photo_camera_outlined,
                         label: 'Upload Photo',
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(builder: (_) => const PhotoSelectionScreen()),
+                          );
+                        },
                       ),
                     ),
                     const SizedBox(width: 12),
