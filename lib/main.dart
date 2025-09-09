@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'theme/app_theme.dart';
 import 'onboarding/onboarding_carousel.dart';
+import 'home/home_screen.dart';
 
 void main() {
   runApp(const OnboardingApp());
@@ -45,7 +46,7 @@ class OnboardingApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Onboarding Carousel',
         theme: baseTheme,
-        home: const OnboardingCarousel(),
+        home: const HomeScreen(),
       ),
     );
   }
