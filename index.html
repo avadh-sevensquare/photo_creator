@@ -17,6 +17,9 @@
         .modal.active { display: flex; }
         .page { display: none; }
         .page.active { display: block; }
+        .nav-item { transition: all 0.3s ease; }
+        .nav-item:hover { background-color: #f0fdf4; }
+        .nav-item.active { background-color: #f0fdf4; color: #16a34a; }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -27,7 +30,7 @@
         </div>
         <nav class="mt-8">
             <div class="px-4 space-y-2">
-                <a href="#" onclick="showPage('dashboard')" class="nav-item flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-green-50 hover:text-green-600 transition-colors">
+                <a href="#" onclick="showPage('dashboard')" class="nav-item active flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-green-50 hover:text-green-600 transition-colors">
                     <i class="fas fa-home mr-3"></i>
                     Dashboard
                 </a>
@@ -882,15 +885,30 @@
             };
             document.getElementById('page-title').textContent = titles[pageId] || 'Dashboard';
             
-            // Update active nav item
+            // Update active nav item - remove active from all
             document.querySelectorAll('.nav-item').forEach(item => {
-                item.classList.remove('bg-green-50', 'text-green-600');
+                item.classList.remove('active', 'bg-green-50', 'text-green-600');
                 item.classList.add('text-gray-700');
             });
             
-            // Add active class to clicked nav item
-            event.target.closest('.nav-item').classList.add('bg-green-50', 'text-green-600');
-            event.target.closest('.nav-item').classList.remove('text-gray-700');
+            // Add active class to the correct nav item based on pageId
+            const navMapping = {
+                'dashboard': 0,
+                'stock': 1,
+                'billing': 2,
+                'deliveries': 3,
+                'reports': 4,
+                'users': 5,
+                'settings': 6
+            };
+            
+            const navItems = document.querySelectorAll('.nav-item');
+            const activeIndex = navMapping[pageId];
+            
+            if (activeIndex !== undefined && navItems[activeIndex]) {
+                navItems[activeIndex].classList.add('active', 'bg-green-50', 'text-green-600');
+                navItems[activeIndex].classList.remove('text-gray-700');
+            }
         }
 
         // Sidebar toggle for mobile
@@ -967,8 +985,10 @@
             window.deleteItemId = id;
         }
 
-        // Initialize charts when page loads
+        // Initialize navigation and charts when page loads
         document.addEventListener('DOMContentLoaded', function() {
+            // Initialize navigation - set Dashboard as active by default
+            showPage('dashboard');
             // Inventory Trend Chart
             const inventoryCtx = document.getElementById('inventoryChart').getContext('2d');
             new Chart(inventoryCtx, {
